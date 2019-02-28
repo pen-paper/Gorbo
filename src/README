@@ -1,0 +1,4 @@
+Source code of Le Game
+======================
+
+This folder contains all of the code for the game. The game can be run using `python main.py`. Make sure you are using Python 3.7. Other versions are not tested.
