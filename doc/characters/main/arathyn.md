@@ -6,10 +6,17 @@ A playable character.
 Stats
 -----
 
-Unknown
-
+* Role: Damage
+* Element: Lightning
+* Health: 180
+  * Levels 2-50: +20
+* Base Speed: 50
+* Gimmick: Mechanical Limbs
 
 Abilities
 ---------
 
-Unknown
+* Mechanical Limbs
+
+    **Arathyn**
+
