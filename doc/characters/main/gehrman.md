@@ -6,9 +6,16 @@ A playable character.
 Stats
 -----
 
-Unknown
+* Role: Assassin
+* Element: Water
+* Health: 155
+  * Levels 2-50: +15
+* Base Speed: 75
+* Gimmick: Blood Sense
 
 Abilities
 ---------
 
-Unknown
+* Blood Sense
+
+    **Gehrman**
