@@ -1,7 +1,7 @@
 Harf
 ====
 
-A character based on Christian Dhainin.
+A playable character.
 
 Stats
 -----
