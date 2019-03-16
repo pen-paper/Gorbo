@@ -1,16 +1,15 @@
 import pyglet
-import mode
+from . import mode
+from . import overworld
 
 
 class MainMenu(mode.Mode):
     def __init__(self):
         super().__init__()
-        #self.group = MenuGroup()
         self.background_group = pyglet.graphics.OrderedGroup(0)
         self.foreground_group = pyglet.graphics.OrderedGroup(1)
 
     def setup(self, game, last_mode):
-        print("Creating the menu!")
         super().setup(game, last_mode)
         self.game.set_view(self.game.ORTHO)
         width, height = self.game.get_size()
@@ -61,3 +60,6 @@ class MainMenu(mode.Mode):
                                 2*width/3 + 10, height/2 + 6)
         self.title.x = width/2
         self.title.y = 3*height/4
+
+    def on_mouse_release(self, x, y, button, modifiers):
+        self.game.start_mode(overworld.Overworld())

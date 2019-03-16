@@ -1,6 +1,6 @@
 import sys
-import game
-import main_menu
+from src import game
+from src import main_menu
 
 
 def main(args):

@@ -18,3 +18,6 @@ class Mode(object):
 
     def draw(self):
         self.batch.draw()
+
+    def on_mouse_release(self, x, y, button, modifiers):
+        pass

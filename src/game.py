@@ -1,5 +1,6 @@
 import pyglet
 
+
 class Game(pyglet.window.Window):
     PERSPECTIVE = 0
     ORTHO = 1
@@ -8,6 +9,8 @@ class Game(pyglet.window.Window):
         super().__init__(visible=False, resizable=True)
         self.mode = None
         self.view = self.ORTHO
+        pyglet.resource.path = ["./res/images", "./res/sounds", "./res/music"]
+        pyglet.resource.reindex()
 
     def start_mode(self, mode):
         last_mode = self.mode
@@ -19,21 +22,29 @@ class Game(pyglet.window.Window):
 
     def set_view(self, view):
         self.view = view
+        if view == self.PERSPECTIVE:
+            self.set_perspective()
+        else:
+            self.set_ortho()
 
     def on_draw(self):
         self.clear()
         self.mode.draw()
 
+    def on_mouse_release(self, x, y, button, modifiers):
+        self.mode.on_mouse_release(x, y, button, modifiers)
+
     def on_resize(self, width, height):
         #self._width = width
         #self._height = height
         if self.view == self.PERSPECTIVE:
-            self.set_perspective(width, height)
+            self.set_perspective()
         else:
-            self.set_ortho(width, height)
+            self.set_ortho()
         return pyglet.event.EVENT_HANDLED
 
-    def set_ortho(self, width, height):
+    def set_ortho(self):
+        width, height = self.get_size()
         pyglet.gl.glDisable(pyglet.gl.GL_DEPTH_TEST)
         pyglet.gl.glViewport(0, 0, width, height)
         pyglet.gl.glMatrixMode(pyglet.gl.GL_PROJECTION)
@@ -41,12 +52,14 @@ class Game(pyglet.window.Window):
         pyglet.gl.glOrtho(0, width, 0, height, -1, 1)
         pyglet.gl.glMatrixMode(pyglet.gl.GL_MODELVIEW)
 
-    def set_perspective(self, width, height):
+    def set_perspective(self):
+        width, height = self.get_size()
         pyglet.gl.glEnable(pyglet.gl.GL_DEPTH_TEST)
         pyglet.gl.glViewport(0, 0, width, height)
         pyglet.gl.glMatrixMode(pyglet.gl.GL_PROJECTION)
         pyglet.gl.glLoadIdentity()
         pyglet.gl.gluPerspective(65, width/height, 0.1, 1000)
+        #pyglet.gl.glTranslatef(width/2, height/2, -20)
         pyglet.gl.glMatrixMode(pyglet.gl.GL_MODELVIEW)
 
     def update(self, dt):
