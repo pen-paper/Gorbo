@@ -34,6 +34,12 @@ class Game(pyglet.window.Window):
     def on_mouse_release(self, x, y, button, modifiers):
         self.mode.on_mouse_release(x, y, button, modifiers)
 
+    def on_key_press(self, symbol, modifiers):
+        self.mode.on_key_press(symbol, modifiers)
+
+    def on_key_release(self, symbol, modifiers):
+        self.mode.on_key_release(symbol, modifiers)
+
     def on_resize(self, width, height):
         #self._width = width
         #self._height = height

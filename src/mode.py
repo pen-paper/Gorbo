@@ -21,3 +21,9 @@ class Mode(object):
 
     def on_mouse_release(self, x, y, button, modifiers):
         pass
+
+    def on_key_press(self, symbol, modifiers):
+        pass
+
+    def on_key_release(self, symbol, modifiers):
+        pass
