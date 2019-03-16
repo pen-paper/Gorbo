@@ -57,22 +57,41 @@ class Overworld(mode.Mode):
                                               9, 14, 10, 10, 14, 15, 10, 15, 11
                                              ],
                                              "v3f/static", "t2f/static")
-        self.ground.vertices = (-1.5, -1, -2,     -0.5, -1, -2,    0.50, -1, -2,   1.50, -1, -2,
-                                -1.50, -1, -2.5,  -.50, -1, -2.5,  .50, -1, -2.5,  1.50, -1, -2.5,
-                                -1.50, -1, -3.5,  -.50, -1, -3.5,  .50, -1, -3.5,  1.50, -1, -3.5,
-                                -1.50, -1, -4,    -.50, -1, -4,    .50, -1, -4,    1.50, -1, -4)
+        self.ground.vertices = (-1.5, -1, -2,     -0.5, -0.5, -2,    0.50, -0.5, -2,   1.50, -1, -2,
+                                -1.50, -0.5, -2.5,  -.50, -0.25, -2.5,  .50, -0.25, -2.5,  1.50, -0.5, -2.5,
+                                -1.50, -0.5, -3.5,  -.50, -0.25, -3.5,  .50, -0.25, -3.5,  1.50, -0.5, -3.5,
+                                -1.50, -1, -4,    -.50, -0.5, -4,    .50, -0.5, -4,    1.50, -1, -4)
         self.ground.tex_coords = (0, 0, 0.25, 0, 0.75, 0, 1, 0, 0, 0.25,
                                   0.25, 0.25, 0.75, 0.25, 1, 0.25, 0, 0.75,
                                   0.25, 0.75, 0.75, 0.75, 1, 0.75, 0, 1, 
                                   0.25, 1, 0.75, 1, 1, 1)
         #  self.ground.colors = (255, 0, 0) * 16
 
+    def get_heights(self, x, z):
+        heights = []
+        for triangle in range(len(self.ground.indices)//3):
+            i1, i2, i3 = self.ground.indices[triangle*3:triangle*3+3]
+            x1, y1, z1 = self.ground.vertices[i1*3:i1*3+3]
+            x2, y2, z2 = self.ground.vertices[i2*3:i2*3+3]
+            x3, y3, z3 = self.ground.vertices[i3*3:i3*3+3]
+            if min(x1, x2, x3) > x or max(x1, x2, x3) < x or min(z1, z2, z3) > z or max(z1, z2, z3) < z:
+                continue
+            w1 = ((z2-z3)*(x-x3)+(x3-x2)*(z-z3))/((z2-z3)*(x1-x3)+(x3-x2)*(z1-z3))
+            w2 = ((z3-z1)*(x-x3)+(x1-x3)*(z-z3))/((z2-z3)*(x1-x3)+(x3-x2)*(z1-z3))
+            w3 = 1 - w1 - w2
+            if min(w1, w2, w3) < 0:
+                continue
+            heights.append(y1*w1+y2*w2+y3*w3)
+        return heights
+
     def update(self, dt):
         # TODO: Add game logic for the overworld.
-        self.character.update(dt)
+        self.character.update(self, dt)
 
     def draw(self):
         # TODO: Add redrawing to the overworld.
+        pyglet.gl.glLoadIdentity()
+        pyglet.gl.gluLookAt(self.character.x, self.character.y+1+self.character.h, self.character.z+2, self.character.x, self.character.y+self.character.h, self.character.z, 0, 1, 0)
         super().draw()
 
     def on_key_press(self, symbol, modifiers):

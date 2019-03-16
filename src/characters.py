@@ -5,8 +5,8 @@ class TestCharacter(object):
     def __init__(self):
         self.texture = pyglet.resource.image("test_person.png")
         self.x = 0
-        self.y = 0
-        self.z = -2
+        self.y = 1
+        self.z = -3
         self.vx = 0
         self.vy = 0
         self.vz = 0
@@ -30,10 +30,19 @@ class TestCharacter(object):
                                         self.x+self.w, self.y+self.h, self.z,
                                         self.x-self.w, self.y+self.h, self.z)
 
-    def update(self, dt):
+    def update(self, overworld, dt):
         self.x += self.vx * dt
         self.y += self.vy * dt
         self.z += self.vz * dt
+        heights = overworld.get_heights(self.x, self.z)
+        for height in heights:
+            if height == self.y:
+               break
+            elif self.y < height < self.y + self.h:
+               self.y = height
+               break
+        else:
+            self.vy = -1
         self.update_position()
 
     def key_press(self, key):
