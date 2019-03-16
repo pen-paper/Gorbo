@@ -1,12 +1,12 @@
 import pyglet
 
 
-class TestCharacter(object):
-    def __init__(self):
-        self.texture = pyglet.resource.image("test_person.png")
-        self.x = 0
-        self.y = 1
-        self.z = -3
+class Character(object):
+    def __init__(self, texture, x, y, z):
+        self.texture = texture
+        self.x = x
+        self.y = y
+        self.z = z
         self.vx = 0
         self.vy = 0
         self.vz = 0
@@ -44,24 +44,3 @@ class TestCharacter(object):
         else:
             self.vy = -1
         self.update_position()
-
-    def key_press(self, key):
-        if key == pyglet.window.key.A:
-            self.vx -= 1
-        elif key == pyglet.window.key.D:
-            self.vx += 1
-        elif key == pyglet.window.key.W:
-            self.vz -= 1
-        elif key == pyglet.window.key.S:
-            self.vz += 1
-
-    def key_release(self, key):
-        if key == pyglet.window.key.A:
-            self.vx += 1
-        elif key == pyglet.window.key.D:
-            self.vx -= 1
-        elif key == pyglet.window.key.W:
-            self.vz += 1
-        elif key == pyglet.window.key.S:
-            self.vz -= 1
-        

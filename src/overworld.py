@@ -1,6 +1,7 @@
 import pyglet
 from . import mode
-from . import characters
+from . import test_character
+from . import test_enemy
 
 
 class OverworldGroundTextureGroup(pyglet.graphics.Group):
@@ -34,13 +35,15 @@ class Overworld(mode.Mode):
         self.ground_texture = None
         self.ground_group = None
         self.ground = None
-        self.character = characters.TestCharacter()
+        self.character = test_character.TestCharacter()
+        self.enemy = test_enemy.TestEnemy()
         # TODO: Add variables specific to the Overworld.
 
     def setup(self, game, last_mode):
         super().setup(game, last_mode)
         self.game.set_view(self.game.PERSPECTIVE)
         self.character.add_to_batch(self.batch)
+        self.enemy.add_to_batch(self.batch)
         self.ground_texture = pyglet.resource.image("overworld_ground.png")
         self.ground_group = OverworldGroundTextureGroup(self.ground_texture)
         #  self.ground = self.batch.add_indexed(4, pyglet.gl.GL_TRIANGLES, self.ground_group, [0, 2, 1, 0, 3, 2], "v3f", "t2f")
@@ -87,6 +90,7 @@ class Overworld(mode.Mode):
     def update(self, dt):
         # TODO: Add game logic for the overworld.
         self.character.update(self, dt)
+        self.enemy.update(self, dt)
 
     def draw(self):
         # TODO: Add redrawing to the overworld.
