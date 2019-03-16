@@ -10,9 +10,21 @@ class OverworldGroundTextureGroup(pyglet.graphics.Group):
     def set_state(self):
         pyglet.gl.glEnable(self.texture.target)
         pyglet.gl.glBindTexture(self.texture.target, self.texture.id)
+        t = self.texture.tex_coords
+        x, y = t[:2]
+        w = t[6] - x
+        h = t[7] - y
+        pyglet.gl.glMatrixMode(pyglet.gl.GL_TEXTURE)
+        pyglet.gl.glPushMatrix()
+        pyglet.gl.glTranslatef(x, y, 0)
+        pyglet.gl.glScalef(w, h, 1)
+        pyglet.gl.glMatrixMode(pyglet.gl.GL_MODELVIEW)
 
     def unset_state(self):
         pyglet.gl.glDisable(self.texture.target)
+        pyglet.gl.glMatrixMode(pyglet.gl.GL_TEXTURE)
+        pyglet.gl.glPopMatrix()
+        pyglet.gl.glMatrixMode(pyglet.gl.GL_MODELVIEW)
 
 
 class Overworld(mode.Mode):
@@ -31,8 +43,7 @@ class Overworld(mode.Mode):
         self.ground = self.batch.add_indexed(4, pyglet.gl.GL_TRIANGLES, self.ground_group, [0, 2, 1, 0, 3, 2], "v3f", "t2f")
         self.ground.vertices = (-1.5, -1.0, -2, 1.5, -1.0, -2, 1.5, -1.0, -5, -1.5, -1.0, -5)
         #  self.ground.colors = (255, 0, 0, 0, 255, 0, 0, 0, 255, 255, 255, 255)
-        t = self.ground_texture.tex_coords
-        self.ground.tex_coords = (t[0], t[1], t[3], t[4], t[6], t[7], t[9], t[10])
+        self.ground.tex_coords = (0, 0, 1, 0, 1, 1, 1, 0)
         #  self.ground = self.batch.add_indexed(16, pyglet.gl.GL_TRIANGLES, 
         #                                       self.ground_group,
         #                                       [0, 4, 5, 0, 5, 1, 1, 5, 6,
