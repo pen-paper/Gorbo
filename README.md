@@ -6,5 +6,10 @@ This is a game created by Christian Dhainin, with help from Jackson Dill, Ethan 
 Running the Game
 ----------------
 
-This game requires Python 3.7. It can be run from the `src` directory using 
-```python main.py```
+### Dependencies
+
+* Python 3.7
+* Pyglet 1.3
+
+This can be run from the root directory using 
+```python gorbo.py```
