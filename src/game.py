@@ -11,14 +11,19 @@ class Game(pyglet.window.Window):
         self.view = self.ORTHO
         pyglet.resource.path = ["./res/images", "./res/sounds", "./res/music"]
         pyglet.resource.reindex()
+        self.keyhandler = pyglet.window.key.KeyStateHandler()
+        self.push_handlers(self.keyhandler)
 
     def start_mode(self, mode):
+        if self.mode is not None:
+            self.mode.on_pause()
         last_mode = self.mode
         self.mode = mode
         self.mode.setup(self, last_mode)
 
     def restore_mode(self, mode):
         self.mode = mode
+        mode.on_restore()
 
     def set_view(self, view):
         self.view = view

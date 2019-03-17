@@ -27,3 +27,9 @@ class Mode(object):
 
     def on_key_release(self, symbol, modifiers):
         pass
+
+    def on_pause(self):
+        pass
+
+    def on_restore(self):
+        pass

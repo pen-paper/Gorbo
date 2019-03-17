@@ -103,3 +103,15 @@ class Overworld(mode.Mode):
 
     def on_key_release(self, symbol, modifiers):
         self.character.key_release(symbol)
+
+    def on_pause(self):
+        self.current_keys = self.game.keyhandler.copy()
+
+    def on_restore(self):
+        new_keys = self.game.keyhandler.copy()
+        for key in self.current_keys:
+            if new_keys[key] != self.current_keys[key]:
+                if new_keys[key]:
+                    self.character.key_press(key)
+                else:
+                    self.character.key_release(key)
