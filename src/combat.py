@@ -13,7 +13,7 @@ class TestCombat(mode.Mode):
     def setup(self, game, last_mode):
         super().setup(game, last_mode)
         game.set_view(game.PERSPECTIVE)
-        self.character = test_character.TestCharacter()
+        self.character = test_character.TestCharacter(game.character_core)
         self.enemy = test_enemy.TestEnemy()
         self.character.x = -0.75
         self.enemy.x = 0.75

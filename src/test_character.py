@@ -3,8 +3,9 @@ from . import character
 
 
 class TestCharacter(character.Character):
-    def __init__(self):
+    def __init__(self, core):
         super().__init__(pyglet.resource.image("test_person.png"), 0, 1, -3)
+        self.core = core
 
 
     def key_press(self, key):

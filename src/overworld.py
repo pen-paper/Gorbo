@@ -35,13 +35,14 @@ class Overworld(mode.Mode):
         self.ground_texture = None
         self.ground_group = None
         self.ground = None
-        self.character = test_character.TestCharacter()
+        self.character = None
         self.enemy = test_enemy.TestEnemy()
         # TODO: Add variables specific to the Overworld.
 
     def setup(self, game, last_mode):
         super().setup(game, last_mode)
         self.game.set_view(self.game.PERSPECTIVE)
+        self.character = test_character.TestCharacter(game.character_core)
         self.character.add_to_batch(self.batch)
         self.enemy.add_to_batch(self.batch)
         self.ground_texture = pyglet.resource.image("overworld_ground.png")
