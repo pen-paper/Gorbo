@@ -1,6 +1,6 @@
 import pyglet
 from . import character
-from . import combat
+from ..modes import combat
 
 
 class TestEnemy(character.Character):

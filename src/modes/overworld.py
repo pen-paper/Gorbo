@@ -1,7 +1,7 @@
 import pyglet
 from . import mode
-from . import test_character
-from . import test_enemy
+from ..characters import test_character
+from ..characters import test_enemy
 
 
 class OverworldGroundTextureGroup(pyglet.graphics.Group):

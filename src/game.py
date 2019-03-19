@@ -1,5 +1,5 @@
 import pyglet
-from . import test_character_core
+from .characters import test_character_core
 
 
 class Game(pyglet.window.Window):
