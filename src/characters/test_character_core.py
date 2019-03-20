@@ -1,12 +1,12 @@
 from . import character_core
-from . import ability
+from ..abilities import test_ability
 from . import test_character
 
 
 class TestCharacterCore(character_core.CharacterCore):
     def __init__(self):
         super().__init__()
-        self._abilities = [ability.Ability("Poke", damage=10, cooldown=0, target=ability.FRONT)]
+        self._abilities = [test_ability.TestAbility()]
         self._overworld = test_character.TestCharacter(self)
         self._combat = test_character.TestCharacter(self)
 

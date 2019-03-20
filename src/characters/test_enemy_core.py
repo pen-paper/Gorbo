@@ -1,5 +1,5 @@
 from . import character_core
-from . import ability
+from ..abilities import test_ability
 from . import test_enemy
 from ..modes import combat
 
@@ -7,7 +7,7 @@ from ..modes import combat
 class TestEnemyCore(character_core.CharacterCore):
     def __init__(self):
         super().__init__()
-        self._abilities = [ability.Ability("Poke", damage=10, cooldown=0, target=ability.FRONT)]
+        self._abilities = [test_ability.TestAbility()]
         self._overworld = test_enemy.TestEnemy(self)
         self._combat = test_enemy.TestEnemy(self)
 

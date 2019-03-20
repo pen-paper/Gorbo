@@ -10,6 +10,8 @@ class TestCombat(mode.Mode):
         super().__init__()
         self.enemy_character = character
         self.positions = [[None, None, None] for y in range(6)]
+        self.abilities_list = []
+        self.ability_labels = pyglet.graphics.Batch()
 
     def setup(self, game, last_mode):
         super().setup(game, last_mode)
@@ -43,6 +45,8 @@ class TestCombat(mode.Mode):
                                 0.5, 0, -3, 1, 0, -3, 1, 0, -3.5, 0.5, 0, -3.5,
                                 1.5, 0, -3, 2, 0, -3, 2, 0, -3.5, 1.5, 0, -3.5,
                                 2.5, 0, -3, 3, 0, -3, 3, 0, -3.5, 2.5, 0, -3.5)
+        for ability in self.character.core.abilities:
+            self.abilities_list.append(pyglet.text.Label("{}: {}".format(ability.name, ability.current_cooldown), batch=self.ability_labels))
         
 
     def update(self, dt):
@@ -53,9 +57,14 @@ class TestCombat(mode.Mode):
                     character.update_combat(self, dt)
 
     def draw(self):
+        self.game.set_view(self.game.PERSPECTIVE)
         pyglet.gl.glLoadIdentity()
         pyglet.gl.gluLookAt(0, 2, 0, 0, 0, -4, 0, 1, 0)
         super().draw()
+        self.game.set_view(self.game.ORTHO)
+        # TODO: Draw other important information
+        pyglet.gl.glLoadIdentity()
+        self.ability_labels.draw()
 
     def on_mouse_release(self, x, y, button, modifiers):
         self.game.restore_mode(self.last_mode)

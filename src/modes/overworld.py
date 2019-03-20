@@ -109,6 +109,7 @@ class Overworld(mode.Mode):
         self.current_keys = self.game.keyhandler.copy()
 
     def on_restore(self):
+        self.game.set_view(self.game.PERSPECTIVE)
         new_keys = self.game.keyhandler.copy()
         for key in self.current_keys:
             if new_keys[key] != self.current_keys[key]:
