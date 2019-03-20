@@ -45,8 +45,11 @@ class TestCombat(mode.Mode):
                                 0.5, 0, -3, 1, 0, -3, 1, 0, -3.5, 0.5, 0, -3.5,
                                 1.5, 0, -3, 2, 0, -3, 2, 0, -3.5, 1.5, 0, -3.5,
                                 2.5, 0, -3, 3, 0, -3, 3, 0, -3.5, 2.5, 0, -3.5)
-        for ability in self.character.core.abilities:
-            self.abilities_list.append(pyglet.text.Label("{}: {}".format(ability.name, ability.current_cooldown), batch=self.ability_labels))
+        current_y = 10
+        self.lineheight = 30
+        for ability in sorted(self.character.core.abilities, key=lambda a: a.current_cooldown):
+            self.abilities_list.append((ability, pyglet.text.Label("{}: {}".format(ability.name, ability.current_cooldown), x=10, y=current_y, width=200, height=self.lineheight, batch=self.ability_labels)))
+            current_y += self.lineheight
         
 
     def update(self, dt):
@@ -67,5 +70,17 @@ class TestCombat(mode.Mode):
         self.ability_labels.draw()
 
     def on_mouse_release(self, x, y, button, modifiers):
-        self.game.restore_mode(self.last_mode)
+        if button == pyglet.window.mouse.RIGHT:
+            self.game.restore_mode(self.last_mode)
+        else:
+            y -= 10
+            for a in self.abilities_list:
+                if y < self.lineheight:
+                    break
+                y -= self.lineheight
+            else:
+                return
+            self.enemy.attack(a[0].attack)
+            if self.enemy.dead:
+                self.game.restore_mode(self.last_mode)
 

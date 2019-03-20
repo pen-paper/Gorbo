@@ -1,6 +1,7 @@
 from . import character_core
 from ..abilities import test_ability
 from . import test_enemy
+from . import test_enemy_combat
 from ..modes import combat
 
 
@@ -9,7 +10,7 @@ class TestEnemyCore(character_core.CharacterCore):
         super().__init__()
         self._abilities = [test_ability.TestAbility()]
         self._overworld = test_enemy.TestEnemy(self)
-        self._combat = test_enemy.TestEnemy(self)
+        self._combat = test_enemy_combat.TestEnemyCombat(self)
 
     @property
     def abilities(self):
