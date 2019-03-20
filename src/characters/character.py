@@ -2,7 +2,8 @@ import pyglet
 
 
 class Character(object):
-    def __init__(self, texture, x, y, z):
+    def __init__(self, core, texture, x, y, z):
+        self.core = core
         self.texture = texture
         self.x = x
         self.y = y

@@ -6,15 +6,16 @@ from ..characters import test_character
 
 
 class TestCombat(mode.Mode):
-    def __init__(self):
+    def __init__(self, character):
         super().__init__()
+        self.enemy_character = character
         self.positions = [[None, None, None] for y in range(6)]
 
     def setup(self, game, last_mode):
         super().setup(game, last_mode)
         game.set_view(game.PERSPECTIVE)
-        self.character = test_character.TestCharacter(game.character_core)
-        self.enemy = test_enemy.TestEnemy()
+        self.character = game.character_core.combat_sprite
+        self.enemy = self.enemy_character.combat_sprite
         self.character.x = -0.75
         self.enemy.x = 0.75
         self.character.y = 0

@@ -12,4 +12,11 @@ class CharacterCore(object):
     def abilities(self):
         pass
 
+    @property
+    def overworld_sprite(self):
+        pass
+
+    @property
+    def combat_sprite(self):
+        pass
 
