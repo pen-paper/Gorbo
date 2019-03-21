@@ -1,7 +1,7 @@
 import pyglet
 from . import mode
 # from ..characters import test_character
-from ..characters import test_enemy_core
+from ..characters import test_enemy
 
 
 class OverworldGroundTextureGroup(pyglet.graphics.Group):
@@ -36,7 +36,7 @@ class Overworld(mode.Mode):
         self.ground_group = None
         self.ground = None
         self.character = None
-        self.enemy = test_enemy_core.TestEnemyCore()
+        self.enemy = test_enemy.TestEnemyCore()
         # TODO: Add variables specific to the Overworld.
 
     def setup(self, game, last_mode):

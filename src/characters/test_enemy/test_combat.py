@@ -1,11 +1,10 @@
 import pyglet
-from . import mode
-from . import overworld
-from ..characters import test_enemy
-from ..characters import test_character
+from ... import modes
+from . import test_enemy
+from . import test_character
 
 
-class TestCombat(mode.Mode):
+class TestCombat(modes.Mode):
     def __init__(self, character):
         super().__init__()
         self.enemy_character = character
@@ -27,7 +26,7 @@ class TestCombat(mode.Mode):
         self.character.add_to_batch(self.batch)
         self.enemy.add_to_batch(self.batch)
         self.ground_texture = pyglet.resource.image("overworld_ground.png")
-        self.ground_group = overworld.OverworldGroundTextureGroup(self.ground_texture)
+        self.ground_group = modes.OverworldGroundTextureGroup(self.ground_texture)
         self.ground = self.batch.add_indexed(24, pyglet.gl.GL_TRIANGLES, self.ground_group,
                                              [0, 1, 2, 0, 2, 3, 4, 5, 6, 4, 6, 7, 
                                               8, 9, 10, 8, 10, 11, 12, 13, 14, 12, 14, 15,

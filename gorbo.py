@@ -1,12 +1,12 @@
 import sys
 from src import game
-from src.modes import main_menu
+from src import modes
 
 
 def main(args):
     # TODO: Do any setup stuff, like loading things or logging in.
     main_game = game.Game()
-    m = main_menu.MainMenu()
+    m = modes.MainMenu()
     main_game.start_mode(m)
     main_game.mainloop()
     # Save on exit?

@@ -1,5 +1,5 @@
 import pyglet
-from .characters import test_character_core
+from .characters import test_character
 
 
 class Game(pyglet.window.Window):
@@ -14,7 +14,7 @@ class Game(pyglet.window.Window):
         pyglet.resource.reindex()
         self.keyhandler = pyglet.window.key.KeyStateHandler()
         self.push_handlers(self.keyhandler)
-        self.character_core = test_character_core.TestCharacterCore()
+        self.character_core = test_character.TestCharacterCore()
 
     def start_mode(self, mode):
         if self.mode is not None:

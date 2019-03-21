@@ -1,8 +1,8 @@
-from . import character_core
-from ..abilities import test_ability
+from .. import character_core
+from ...abilities import test_ability
 from . import test_enemy
 from . import test_enemy_combat
-from ..modes import combat
+from . import test_combat
 
 
 class TestEnemyCore(character_core.CharacterCore):
@@ -26,4 +26,4 @@ class TestEnemyCore(character_core.CharacterCore):
 
     @property
     def combat_arena(self):
-        return combat.TestCombat(self)
+        return test_combat.TestCombat(self)

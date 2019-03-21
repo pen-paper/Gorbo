@@ -1,0 +1,1 @@
+from .test_character_core import TestCharacterCore

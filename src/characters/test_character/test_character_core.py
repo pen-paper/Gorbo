@@ -1,5 +1,6 @@
-from . import character_core
-from ..abilities import test_ability
+from .. import character_core
+from ...abilities import test_ability
+
 from . import test_character
 
 

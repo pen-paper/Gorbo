@@ -1,5 +1,5 @@
 import pyglet
-from . import character
+from .. import character
 
 
 class TestEnemyCombat(character.Character):
