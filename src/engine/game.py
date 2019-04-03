@@ -1,20 +1,18 @@
 import pyglet
-from .characters import test_character
+
+PERSPECTIVE = 0
+ORTHOGONAL = 1
 
 
 class Game(pyglet.window.Window):
-    PERSPECTIVE = 0
-    ORTHO = 1
-
     def __init__(self):
         super().__init__(visible=False, resizable=True)
         self.mode = None
-        self.view = self.ORTHO
-        pyglet.resource.path = ["./res/images", "./res/sounds", "./res/music"]
+        self.view = ORTHOGONAL
+        pyglet.resource.path = ["/res/images", "/res/sounds", "/res/music"]
         pyglet.resource.reindex()
         self.keyhandler = pyglet.window.key.KeyStateHandler()
         self.push_handlers(self.keyhandler)
-        self.character_core = test_character.TestCharacterCore()
 
     def start_mode(self, mode):
         if self.mode is not None:
@@ -29,7 +27,7 @@ class Game(pyglet.window.Window):
 
     def set_view(self, view):
         self.view = view
-        if view == self.PERSPECTIVE:
+        if view == PERSPECTIVE:
             self.set_perspective()
         else:
             self.set_ortho()
@@ -50,7 +48,7 @@ class Game(pyglet.window.Window):
     def on_resize(self, width, height):
         #self._width = width
         #self._height = height
-        if self.view == self.PERSPECTIVE:
+        if self.view == PERSPECTIVE:
             self.set_perspective()
         else:
             self.set_ortho()
@@ -72,7 +70,6 @@ class Game(pyglet.window.Window):
         pyglet.gl.glMatrixMode(pyglet.gl.GL_PROJECTION)
         pyglet.gl.glLoadIdentity()
         pyglet.gl.gluPerspective(65, width/height, 0.1, 1000)
-        #pyglet.gl.glTranslatef(width/2, height/2, -20)
         pyglet.gl.glMatrixMode(pyglet.gl.GL_MODELVIEW)
 
     def update(self, dt):
@@ -84,6 +81,5 @@ class Game(pyglet.window.Window):
             print("Try starting the main menu.")
             return
         self.set_visible()
-        #pyglet.gl.glFrontFace(pyglet.gl.GL_CW)
         pyglet.clock.schedule_interval(self.update, 1/60)
         pyglet.app.run()

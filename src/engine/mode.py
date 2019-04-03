@@ -8,13 +8,15 @@ class Mode(object):
         self.game = None
         self.last_mode = None
         self.batch = pyglet.graphics.Batch()
+        self.sprites = []
 
     def setup(self, game, last_mode):
         self.game = game
         self.last_mode = last_mode
 
     def update(self, dt):
-        pass
+        for sprite in self.sprites:
+            sprite.update(dt)
 
     def draw(self):
         self.batch.draw()

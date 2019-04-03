@@ -1,7 +1,7 @@
 import pyglet
 
 
-class TextureGroup(pyglet.glaphics.Group):
+class TextureGroup(pyglet.graphics.Group):
     def __init__(self, texture):
         self.texture = texture
 
