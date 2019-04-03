@@ -1,0 +1,91 @@
+Trigger: Unknown
+
+Griffin enters.
+
+Character attempts to hide.
+
+ Griffin: "What are you?"
+
+ Character: "...Human?"
+
+ Griffin: "Interesting. You may be what I have been looking for."
+
+ Character: "Human's don't taste good."
+
+ Griffin: "I'm not going to eat you."
+ Griffin: "For now."
+ Griffin: "I need you to do something for me."
+ 
+ Character: "Yes, Mr. Griffin Sir"
+
+ Griffin: "I need you to bring me a set of powerful artifacts."
+ Griffin: "My magic doesn't work on them, so I can't get them myself."
+ Griffin: <Something telling the character where to look>
+ Griffin: "Do you understand?"
+
+ Character: "Yes"
+         or "No"
+
+ Griffin: "Now go get them!"
+
+Girffin leaves.
+
+---
+
+Artifact 1:
+
+TBD
+
+---
+
+Artifact 2:
+
+TBD
+
+---
+
+Artifact 3:
+
+TBD
+
+---
+...
+---
+
+Conclusion
+
+Trigger: Return to start with all artifacts
+
+ Character: "Griffin?"
+ Character: "I got your artifacts."
+
+Griffin enters.
+
+ Griffin: "So you did."
+ Griffin: "Say, these look very nice."
+ Griffin: "I think I'll keep them."
+
+ Character: "You said I would get half."
+
+ Griffin: "Did I?"
+ Griffin: "I don't remember."
+ Griffin: "Must not have said it."
+
+ Character: `Fight` or `Don't Fight`
+
+  Fight:
+    Win:
+
+       Griffin: "Fine, take them."
+
+    Lose:
+
+       Griffin: "Now get lost."
+
+      Griffin exits.
+
+  Don't Fight:
+    
+    Griffin: "Now get lost."
+
+   Griffin exits.
