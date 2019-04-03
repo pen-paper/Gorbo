@@ -1,8 +1,16 @@
 Engine Structure
 ================
 
-The game engine used in this game has three main components: modes,
-sprites, and controllers. 
+The game engine used in this game has four main components: the game,
+modes, sprites, and controllers. 
+
+Game
+----
+
+The game is a singleton that controls the window. It keeps track of the
+current mode, and handles switching between them. It also catches
+external events and passes them down to the current mode and its
+sprites.
 
 Modes
 -----
@@ -10,7 +18,8 @@ Modes
 A mode in this engine is a self-contained region, equivalent to a scene
 or room in other engines. Modes can be 2d or 3d (or both), and are
 responsible for drawing everything to the screen, generally through a
-pyglet Batch.
+pyglet Batch. They also alert sprites to events, whether external (such
+as keypresses) or internal (such as collisions).
 
 Sprites
 ------
@@ -55,4 +64,5 @@ abilities a character has, items they have collected, and other peices
 of relevant history. Each controller may have multiple sprites, spread
 among as many modes as are necessary. (Ex: the main player character
 controller will have sprites in the Overworld mode and every Combat
-mode.) 
+mode.) If necessary, controllers may have their own update functions,
+but sprites are still responsible for calling those. 
