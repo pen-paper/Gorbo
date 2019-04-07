@@ -19,7 +19,8 @@ A mode in this engine is a self-contained region, equivalent to a scene
 or room in other engines. Modes can be 2d or 3d (or both), and are
 responsible for drawing everything to the screen, generally through a
 pyglet Batch. They also alert sprites to events, whether external (such
-as keypresses) or internal (such as collisions).
+as keypresses) or internal (such as collisions or round changes during
+combat).
 
 Sprites
 ------
@@ -31,7 +32,7 @@ as collisions with other sprites or key presses. Each sprite has an
 associated controller, which can be accessed for any purpose in
 updating, reacting, or drawing.
 
-Three types of sprites are used:
+Four types of sprites are used:
 
   * *Ground Sprites*
 
@@ -55,6 +56,12 @@ Three types of sprites are used:
     as menus, health bars, and similar things. No collision detection
     is done for these.
 
+  * *Null Sprites*
+
+    Null sprites do not have any display and serve only as an
+    intermediate between the mode and controller for event purposes.
+
+
 Controllers
 -----------
 
@@ -65,4 +72,5 @@ of relevant history. Each controller may have multiple sprites, spread
 among as many modes as are necessary. (Ex: the main player character
 controller will have sprites in the Overworld mode and every Combat
 mode.) If necessary, controllers may have their own update functions,
-but sprites are still responsible for calling those. 
+but sprites are still responsible for calling those. Null sprites exist
+for this purpose.
