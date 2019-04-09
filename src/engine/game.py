@@ -1,4 +1,6 @@
 import pyglet
+from . import event
+
 
 PERSPECTIVE = 0
 ORTHOGONAL = 1
@@ -16,14 +18,14 @@ class Game(pyglet.window.Window):
 
     def start_mode(self, mode):
         if self.mode is not None:
-            self.mode.on_pause()
+            self.mode.send_event(event.PauseEvent(), [self.mode])
         last_mode = self.mode
         self.mode = mode
         self.mode.setup(self, last_mode)
 
     def restore_mode(self, mode):
         self.mode = mode
-        mode.on_restore()
+        self.mode.send_event(event.UnPauseEvent(), [self.mode])
 
     def set_view(self, view):
         self.view = view
@@ -37,13 +39,16 @@ class Game(pyglet.window.Window):
         self.mode.draw()
 
     def on_mouse_release(self, x, y, button, modifiers):
-        self.mode.on_mouse_release(x, y, button, modifiers)
+        self.mode.send_event(event.MouseUpEvent(x=x, y=y, button=button, modifiers=modifiers))
 
     def on_key_press(self, symbol, modifiers):
-        self.mode.on_key_press(symbol, modifiers)
+        self.mode.send_event(event.KeyDownEvent(key=key, modifiers=modifiers))
 
     def on_key_release(self, symbol, modifiers):
-        self.mode.on_key_release(symbol, modifiers)
+        self.mode.send_event(event.KeyUpEvent(key=key, modifiers=modifiers))
+
+    def on_close(self):
+        self.mode.send_event(event.QuitEvent(), [self.mode])
 
     def on_resize(self, width, height):
         #self._width = width
@@ -73,7 +78,7 @@ class Game(pyglet.window.Window):
         pyglet.gl.glMatrixMode(pyglet.gl.GL_MODELVIEW)
 
     def update(self, dt):
-        self.mode.update(dt)
+        self.mode.send_event(event.UpdateEvent(dt=dt))
 
     def mainloop(self):
         if self.mode is None:
@@ -83,3 +88,6 @@ class Game(pyglet.window.Window):
         self.set_visible()
         pyglet.clock.schedule_interval(self.update, 1/60)
         pyglet.app.run()
+
+    def quit(self):
+        pyglet.app.exit()

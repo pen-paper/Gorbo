@@ -1,4 +1,5 @@
 import pyglet
+from . import event
 
 
 class Mode(object):
@@ -9,29 +10,35 @@ class Mode(object):
         self.last_mode = None
         self.batch = pyglet.graphics.Batch()
         self.sprites = []
+        self.handlers = {
+            event.DeleteSpriteEvent: self.destroy_sprite,
+            event.CreateSpriteEvent: self.create_sprite,
+            event.QuitEvent: self.quit,
+        }
 
     def setup(self, game, last_mode):
         self.game = game
         self.last_mode = last_mode
 
-    def update(self, dt):
-        for sprite in self.sprites:
-            sprite.update(dt)
+    def send_event(self, e_event, sprites=None):
+        if sprites is None:
+            sprites = self.sprites
+        for sprite in sprites:
+            sprite.handle_event(e_event)
+
+    def handle_event(self, e_event):
+        if type(e_event) in self.handlers:
+            self.handlers[type(e_event)](e_event)
+
+    def create_sprite(self, s_event):
+        self.sprites.append(s_event.sprite)
+
+    def destroy_sprite(self, d_event):
+        self.sprites.remove(d_event.sprite)
+
+    def quit(self, event):
+        self.game.quit()
 
     def draw(self):
         self.batch.draw()
 
-    def on_mouse_release(self, x, y, button, modifiers):
-        pass
-
-    def on_key_press(self, symbol, modifiers):
-        pass
-
-    def on_key_release(self, symbol, modifiers):
-        pass
-
-    def on_pause(self):
-        pass
-
-    def on_restore(self):
-        pass

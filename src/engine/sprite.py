@@ -50,19 +50,14 @@ class BaseSprite(object):
         self.texture = texture
         self.group = SpriteGroup(texture)
         self.create_vertex_list()
+        self.handlers = {}
         
     def create_vertex_list(self):
         raise NotImplementedError("If you don't want it to appear, `pass`")
 
-    def update(self):
-        pass
-
-    def button_up(self):
-        pass
-
-    def button_down(self):
-        pass
-
+    def handle_event(self, event):
+        if type(event) in self.handlers:
+            self.handlers[type(event)](event)
     
 
 class DisplaySprite(BaseSprite):
