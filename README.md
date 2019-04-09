@@ -11,5 +11,10 @@ Running the Game
 * Python 3.7
 * Pyglet 1.3
 
-This can be run from the root directory using 
+This cannot be run from the root directory using 
 ```python gorbo.py```
+because it is being updated and has not been fixed yet.
+
+A test version can be run using
+```python test.py```
+
