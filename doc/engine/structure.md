@@ -1,8 +1,8 @@
 Engine Structure
 ================
 
-The game engine used in this game has four main components: the game,
-modes, sprites, and controllers. 
+The game engine used in this game has five main components: the game,
+modes, sprites, controllers, and events. 
 
 Game
 ----
@@ -74,3 +74,37 @@ controller will have sprites in the Overworld mode and every Combat
 mode.) If necessary, controllers may have their own update functions,
 but sprites are still responsible for calling those. Null sprites exist
 for this purpose.
+
+Events
+------
+
+Events are self-contained peices of information given to Sprites. Modes
+are responsible for distributing events to all relevant sprites, but
+any object with a connection to the mode can generate them. Default
+events include (but are not limited to):
+
+  * *KeypressEvent*
+    
+    Keypress events are emitted by the Game whenever a key is pressed.
+    These are given to all sprites that listen for them.
+    
+    Data:
+      * `key`: Pyglet constant representing the key that was pressed.
+      * `modifiers`: List of modifiers that are pressed when the event
+        occurs.
+        
+  * *UpdateEvent*
+  
+    Update events are emmited by the Game on every frame.
+    
+    Data: 
+      * `dt`: Time since last frame
+      
+  * *CollisionEvent*
+  
+    Collision events are emmited by the Mode when it detects that two
+    ModelSprites collide. They are distibuted only to the two sprites
+    that are colliding.
+    
+    Data:
+      * `other`: The sprite this sprite collided with.
