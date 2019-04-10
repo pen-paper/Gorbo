@@ -48,7 +48,10 @@ class BaseSprite(object):
         self.controller = controller
         self.mode = mode
         self.texture = texture
-        self.group = SpriteGroup(texture)
+        if self.texture is not None:
+            self.group = SpriteGroup(texture)
+        else:
+            self.group = None
         self.create_vertex_list()
         self.handlers = {}
         

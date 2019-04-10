@@ -40,5 +40,6 @@ class Mode(object):
         self.game.quit()
 
     def draw(self):
+        print("Drawing a frame!")
         self.batch.draw()
 

@@ -6,7 +6,7 @@ PERSPECTIVE = 0
 ORTHOGONAL = 1
 
 
-class Game(pyglet.window.Window):
+class _Game(pyglet.window.Window):
     def __init__(self):
         super().__init__(visible=False, resizable=True)
         self.mode = None
@@ -41,10 +41,10 @@ class Game(pyglet.window.Window):
     def on_mouse_release(self, x, y, button, modifiers):
         self.mode.send_event(event.MouseUpEvent(x=x, y=y, button=button, modifiers=modifiers))
 
-    def on_key_press(self, symbol, modifiers):
+    def on_key_press(self, key, modifiers):
         self.mode.send_event(event.KeyDownEvent(key=key, modifiers=modifiers))
 
-    def on_key_release(self, symbol, modifiers):
+    def on_key_release(self, key, modifiers):
         self.mode.send_event(event.KeyUpEvent(key=key, modifiers=modifiers))
 
     def on_close(self):
@@ -91,3 +91,12 @@ class Game(pyglet.window.Window):
 
     def quit(self):
         pyglet.app.exit()
+
+
+_game = None
+
+def Game():
+    global _game
+    if _game is None:
+        _game = _Game()
+    return _game
