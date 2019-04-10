@@ -4,3 +4,5 @@ from .sprite import DisplaySprite, ModelSprite, GroundSprite
 from .controller import Controller, NullController
 
 from .main import main
+
+from .event import *
