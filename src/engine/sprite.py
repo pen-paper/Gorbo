@@ -2,6 +2,7 @@ import pyglet
 
 
 class TextureGroup(pyglet.graphics.Group):
+    """Class for using a texture."""
     def __init__(self, texture):
         self.texture = texture
 
@@ -19,6 +20,12 @@ class TextureGroup(pyglet.graphics.Group):
 
 
 class SpriteGroup(pyglet.graphics.Group):
+    """Class for using a specific part of a texture.
+
+    The two-layer group structure created by these classes allows
+    sprites using the same underlying texture to be grouped, while
+    still giving each sprite the texture region it needs.
+    """
     def __init__(self, texture):
         super().__init__(parent=TextureGroup(texture))
         self.texture = texture
@@ -44,6 +51,11 @@ class SpriteGroup(pyglet.graphics.Group):
         
 
 class BaseSprite(object):
+    """Base class for all Sprites.
+
+    Characters, walls, etc. use `ModelSprite`, menu items use 
+    `DisplaySprite`, and ground (heightmap) sprites use `GroundSprite`.
+    """
     def __init__(self, controller, mode, texture):
         self.controller = controller
         self.mode = mode
@@ -64,10 +76,12 @@ class BaseSprite(object):
     
 
 class DisplaySprite(BaseSprite):
+    """Base class for 2d sprites."""
     pass
 
 
 class ModelSprite(BaseSprite):
+    """Base class for 3d sprites."""
     def __init__(self, controller, model, mode, texture):
         self.model = model
         super().__init__(controller, mode, texture)
@@ -80,15 +94,15 @@ class ModelSprite(BaseSprite):
         pass
 
 
-class GroundSprite(BaseSprite):
-    def __init__(self, controller, mode, model, texture):
-        self.model = model
-        super().__init__(controller, mode, texture)
+class GroundSprite(ModelSprite):
+    """Base class for heightmap sprites."""
+    def __init__(self, controller, model, mode, texture):
+        super().__init__(controller, model, mode, texture)
 
     def create_vertex_list(self):
         # TODO: Actually load the model
         super().create_vertex_list()
 
     def get_heights(self, x, y):
-        # TODO: Add the fance height getting code from earlier.
+        # TODO: Add the fancy height getting code from earlier.
         return []
