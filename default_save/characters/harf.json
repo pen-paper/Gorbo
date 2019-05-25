@@ -1,0 +1,42 @@
+{
+  "name": "Harf",
+  "controller": "HarfController",
+  "sprite": "HarfSprite",
+  "class": "Damage",
+  "playable": "true",
+  "level": 1,
+  "skills": [
+    {
+      "name": "Base",
+      "type": "Constant",
+      "effect": { "hp": "+5" },
+      "level": 1
+    },
+    { 
+      "name": "Better",
+      "type": "Attack",
+      "damage": "12",
+      "range": ["Front"],
+      "level": 1
+    },
+    {
+      "name": "Awesome",
+      "type": "Activated",
+      "duration": 3,
+      "effect": { "hp": "+5", "damage": "+5" },
+      "level": 3
+    }
+  ],
+  "perks": [
+    {
+      "name": "Big Boy",
+      "effect": { "hp": "+5" },
+      "requires": []
+    },
+    {
+      "name": "Really Big Boy",
+      "effect": { "hp": "+10" },
+      "requires": ["Big Boy"]
+    }
+  ]
+}
