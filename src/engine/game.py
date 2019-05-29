@@ -148,6 +148,8 @@ class _Game(pyglet.window.Window):
         # pyglet.gl.glEnable(pyglet.gl.GL_DEBUG_OUTPUT)
         self.load()
         pyglet.gl.glClearColor(0.5, 0.5, 0.5, 1)
+        pyglet.gl.glEnable(pyglet.gl.GL_BLEND)
+        pyglet.gl.glBlendFunc(pyglet.gl.GL_SRC_ALPHA, pyglet.gl.GL_ONE_MINUS_SRC_ALPHA)
         if self.mode is None:
             print("Error: No mode started.")
             print("Try starting the main menu.")
