@@ -15,6 +15,6 @@ This cannot be run from the root directory using
 ```python gorbo.py```
 because it is being updated and has not been fixed yet.
 
-A test version can be run using
+A test version can be run from the `src` directory using
 ```python test.py```
 
