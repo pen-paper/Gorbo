@@ -31,6 +31,7 @@ class _Game(pyglet.window.Window):
         self.save = resource.SaveFile()
         self.save.path = [gamefile]
         self.save.reindex()
+        self.party = []
 
     def start_mode(self, mode):
         """ Activate `mode`.
@@ -166,7 +167,11 @@ class _Game(pyglet.window.Window):
     def load(self):
         """Load data from a save file."""
         party_data = self.save.json("party.json")
+        for c in party_data["characters"]:
+            self.party.append(self.load_character(c))
         self.start_mode(self.load_area(party_data["area"]))
+        for c in self.party:
+            self.mode.create_sprite(c)
 
     def load_area(self, area_name):
         """Load an area from the save file."""
@@ -185,6 +190,12 @@ class _Game(pyglet.window.Window):
         if "controller" in data:
             print(data["controller"])
         return sprite.ModelSprite(model, data["x"], data["y"], None, texture)
+
+    def load_character(self, name):
+        data = self.save.json("characters/{}.json".format(name))
+        model = self.save.obj("models/character.obj")
+        texture = self.save.image("textures/{}".format(data["texture"]))
+        return sprite.ModelSprite(model, 0, 0, None, texture)
 
 
 _game = None

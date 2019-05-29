@@ -1,7 +1,7 @@
 {
   "name": "Harf",
   "controller": "HarfController",
-  "sprite": "HarfSprite",
+  "texture": "harf_sprite.png",
   "class": "Damage",
   "playable": "true",
   "level": 1,

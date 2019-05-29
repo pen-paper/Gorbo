@@ -121,6 +121,6 @@ class GameMode(Mode):
         self.game.set_perspective()
         pyglet.gl.glMatrixMode(pyglet.gl.GL_MODELVIEW)
         pyglet.gl.glLoadIdentity()
-        pyglet.gl.gluLookAt(9, 5, -0, 0, 1, 0, 0, 1, 0)
+        pyglet.gl.gluLookAt(0, 5, 9, 0, 1, 0, 0, 1, 0)
         self.batch.draw()
 
