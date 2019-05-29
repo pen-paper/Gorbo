@@ -1,0 +1,27 @@
+{
+  "name": "Room",
+  "ground": [
+    {
+      "model": "room_ground.obj",
+      "x": 0,
+      "y": 0,
+      "texture": "room.png"
+    }
+  ],
+  "models": [
+    {
+      "model": "room_wall.obj",
+      "x": 0,
+      "y": 0,
+      "controller": null,
+      "texture": "room.png"
+    },
+    {
+      "model": "room_door.obj",
+      "x": 0,
+      "y": 0,
+      "controller": "RoomController",
+      "texture": "room.png"
+    }
+  ]
+}

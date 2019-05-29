@@ -4,6 +4,7 @@ import pyglet
 class TextureGroup(pyglet.graphics.Group):
     """Class for using a texture."""
     def __init__(self, texture):
+        super().__init__()
         self.texture = texture
 
     def set_state(self):
@@ -17,6 +18,9 @@ class TextureGroup(pyglet.graphics.Group):
         if not isinstance(other, TextureGroup):
             return False
         return other.texture.target == self.texture.target
+    
+    def __hash__(self):
+        return hash(self.texture)
 
 
 class SpriteGroup(pyglet.graphics.Group):
@@ -31,8 +35,6 @@ class SpriteGroup(pyglet.graphics.Group):
         self.texture = texture
 
     def set_state(self):
-        pyglet.gl.glEnable(self.texture.target)
-        pyglet.gl.glBindTexture(self.texture.target, self.texture.id)
         t = self.texture.tex_coords
         x, y = t[:2]
         w = t[6] - x
@@ -44,9 +46,8 @@ class SpriteGroup(pyglet.graphics.Group):
         pyglet.gl.glMatrixMode(pyglet.gl.GL_MODELVIEW)
 
     def unset_state(self):
-        pyglet.gl.glDisable(self.texture.target)
         pyglet.gl.glMatrixMode(pyglet.gl.GL_TEXTURE)
-        pyglet.gl.glMopMatrix()
+        pyglet.gl.glPopMatrix()
         pyglet.gl.glMatrixMode(pyglet.gl.GL_MODELVIEW)
         
 
@@ -56,18 +57,17 @@ class BaseSprite(object):
     Characters, walls, etc. use `ModelSprite`, menu items use 
     `DisplaySprite`, and ground (heightmap) sprites use `GroundSprite`.
     """
-    def __init__(self, controller, mode, texture):
+    def __init__(self, controller, texture):
         self.controller = controller
-        self.mode = mode
         self.texture = texture
         if self.texture is not None:
             self.group = SpriteGroup(texture)
         else:
             self.group = None
-        self.create_vertex_list()
+        #self.create_vertex_list()
         self.handlers = {}
         
-    def create_vertex_list(self):
+    def create_vertex_list(self, batch):
         raise NotImplementedError("If you don't want it to appear, `pass`")
 
     def handle_event(self, event):
@@ -82,13 +82,22 @@ class DisplaySprite(BaseSprite):
 
 class ModelSprite(BaseSprite):
     """Base class for 3d sprites."""
-    def __init__(self, controller, model, mode, texture):
+    def __init__(self, model, x, y, controller, texture):
         self.model = model
-        super().__init__(controller, mode, texture)
+        self.x = x
+        self.y = y
+        super().__init__(controller, texture)
         
-    def create_vertex_list(self):
-        # TODO: Actaully load a model.
-        super().create_vertex_list()
+    def create_vertex_list(self, batch):
+        self.vertex_list = batch.add_indexed(
+            self.model.num_verts,
+            pyglet.gl.GL_TRIANGLES,
+            self.group,
+            self.model.indices,
+            ("v3f", self.model.vertices),
+            ("t2f", self.model.tex_coords),
+            ("n3f", self.model.normals),
+            ("c3B", (127,)*self.model.num_verts*3))
 
     def collision(self, other):
         pass

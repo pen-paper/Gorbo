@@ -1,8 +1,7 @@
 from . import game
 
     
-def main(first_mode):
+def main(game_file):
     """Run the game."""
-    g = game.Game()
-    g.start_mode(first_mode)
+    g = game.Game(game_file)
     g.mainloop()

@@ -14,3 +14,13 @@ class DeleteSpriteEvent(Event): pass
 class QuitEvent(Event): pass
 class PauseEvent(Event): pass
 class UnPauseEvent(Event): pass
+
+
+class Response(object):
+    def __init__(self, **kwargs):
+        self.__dict__.update(**kwargs)
+
+
+class ChangeMode(Response): pass
+class DeleteSprite(Response): pass
+class NoResponse(Response): pass

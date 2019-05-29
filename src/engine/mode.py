@@ -24,8 +24,8 @@ class Mode(object):
         self.batch = pyglet.graphics.Batch()
         self.sprites = []
         self.handlers = {
-            event.DeleteSpriteEvent: self.destroy_sprite,
-            event.CreateSpriteEvent: self.create_sprite,
+            event.DeleteSpriteEvent: lambda e: self.destroy_sprite(e.sprite),
+            event.CreateSpriteEvent: lambda e: self.create_sprite(e.sprite),
             event.QuitEvent: self.quit,
         }
 
@@ -66,19 +66,21 @@ class Mode(object):
         if type(e_event) in self.handlers:
             self.handlers[type(e_event)](e_event)
 
-    def create_sprite(self, s_event):
+    def create_sprite(self, sprite):
         """Add a new sprite to the mode.
 
         This is done in response to a CreateSpriteEvent.
         """
-        self.sprites.append(s_event.sprite)
+        self.sprites.append(sprite)
+        sprite.create_vertex_list(self.batch)
 
-    def destroy_sprite(self, d_event):
+    def destroy_sprite(self, sprite):
         """Remove a sprite from the mode.
 
         This is done in response to a DeleteSpriteEvent.
         """
-        self.sprites.remove(d_event.sprite)
+        self.sprites.remove(sprite)
+        sprite.delete_vertex_lists()
 
     def quit(self, event):
         """Tell the game to exit.
@@ -98,5 +100,27 @@ class Mode(object):
         contained in two separate batches with calls to `game.set_view`
         between drawing them.
         """
+        self.batch.draw()
+
+
+class GameMode(Mode):
+    """A mode containing a 3d game environment."""
+    def __init__(self, ground, other):
+        super().__init__()
+        self.ground_sprites = []
+        for g in ground:
+            self.ground_sprites.append(g)
+            self.create_sprite(g)
+        for s in other:
+            self.create_sprite(s)
+
+    def setup(self, game, last_mode):
+        super().setup(game, last_mode)
+
+    def draw(self):
+        self.game.set_perspective()
+        pyglet.gl.glMatrixMode(pyglet.gl.GL_MODELVIEW)
+        pyglet.gl.glLoadIdentity()
+        pyglet.gl.gluLookAt(9, 5, -0, 0, 1, 0, 0, 1, 0)
         self.batch.draw()
 

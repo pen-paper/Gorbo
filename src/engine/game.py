@@ -1,5 +1,8 @@
 import pyglet
 from . import event
+from . import resource
+from . import sprite
+from . import mode
 
 
 PERSPECTIVE = 0
@@ -18,15 +21,16 @@ class _Game(pyglet.window.Window):
     game object.
     """
 
-    def __init__(self):
+    def __init__(self, gamefile):
         """Create a Game."""
         super().__init__(visible=False, resizable=True)
         self.mode = None
         self.view = ORTHOGONAL
-        pyglet.resource.path = ["/res/images", "/res/sounds", "/res/music"]
-        pyglet.resource.reindex()
         self.keyhandler = pyglet.window.key.KeyStateHandler()
         self.push_handlers(self.keyhandler)
+        self.save = resource.SaveFile()
+        self.save.path = [gamefile]
+        self.save.reindex()
 
     def start_mode(self, mode):
         """ Activate `mode`.
@@ -127,6 +131,7 @@ class _Game(pyglet.window.Window):
         """Create a perspective (3d) projection."""
         width, height = self.get_size()
         pyglet.gl.glEnable(pyglet.gl.GL_DEPTH_TEST)
+        # pyglet.gl.glPolygonMode(pyglet.gl.GL_FRONT_AND_BACK, pyglet.gl.GL_LINE)
         pyglet.gl.glViewport(0, 0, width, height)
         pyglet.gl.glMatrixMode(pyglet.gl.GL_PROJECTION)
         pyglet.gl.glLoadIdentity()
@@ -139,6 +144,9 @@ class _Game(pyglet.window.Window):
 
     def mainloop(self):
         """Run the game."""
+        # pyglet.gl.glEnable(pyglet.gl.GL_DEBUG_OUTPUT)
+        self.load()
+        pyglet.gl.glClearColor(0.5, 0.5, 0.5, 1)
         if self.mode is None:
             print("Error: No mode started.")
             print("Try starting the main menu.")
@@ -155,10 +163,33 @@ class _Game(pyglet.window.Window):
         """
         pyglet.app.exit()
 
+    def load(self):
+        """Load data from a save file."""
+        party_data = self.save.json("party.json")
+        self.start_mode(self.load_area(party_data["area"]))
+
+    def load_area(self, area_name):
+        """Load an area from the save file."""
+        area_data = self.save.json("areas/{}.json".format(area_name))
+        ground_models = []
+        for g in area_data["ground"]:
+            ground_models.append(self.load_sprite(g))
+        other_models = []
+        for m in area_data["models"]:
+            other_models.append(self.load_sprite(m))
+        return mode.GameMode(ground_models, other_models)
+
+    def load_sprite(self, data):
+        model = self.save.obj("models/{}".format(data["model"]))
+        texture = self.save.image("textures/{}".format(data["texture"]))
+        if "controller" in data:
+            print(data["controller"])
+        return sprite.ModelSprite(model, data["x"], data["y"], None, texture)
+
 
 _game = None
 
-def Game():
+def Game(game_file):
     """Get the Game instance.
 
     If a Game instance has been created, return that. Otherwise, return
@@ -167,5 +198,5 @@ def Game():
     """
     global _game
     if _game is None:
-        _game = _Game()
+        _game = _Game(game_file)
     return _game
