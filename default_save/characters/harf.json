@@ -1,6 +1,6 @@
 {
   "name": "Harf",
-  "controller": "HarfController",
+  "controller": "harf.py",
   "texture": "harf_sprite.png",
   "class": "Damage",
   "playable": "true",

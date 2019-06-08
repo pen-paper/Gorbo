@@ -23,6 +23,7 @@ class Mode(object):
         self.last_mode = None
         self.batch = pyglet.graphics.Batch()
         self.sprites = []
+        self.controllers = []
         self.handlers = {
             event.DeleteSpriteEvent: lambda e: self.destroy_sprite(e.sprite),
             event.CreateSpriteEvent: lambda e: self.create_sprite(e.sprite),
@@ -39,18 +40,22 @@ class Mode(object):
         self.game = game
         self.last_mode = last_mode
 
-    def send_event(self, e_event, sprites=None):
-        """Distribute an event to Sprites.
+    def send_event(self, e_event, which=None):
+        """Distribute an event to Controllers.
 
         If `sprites` is given, it contains a list of the only sprites
         that should receive the event. This is for things like
         collisions, where only two sprites are involved. If not given,
         the event is given to all sprites iin the mode.
         """
-        if sprites is None:
-            sprites = self.sprites
-        for sprite in sprites:
-            sprite.handle_event(e_event)
+        if which is None:
+            which = self.controllers
+        responses = []
+        for controller in which:
+            #print(controller)
+            responses.extend(controller.handle_event(e_event))
+        for r in responses:
+            self.handle_event(r)
 
     def handle_event(self, e_event):
         """Deal with an event.
@@ -64,7 +69,7 @@ class Mode(object):
           * QuitEvent, when the user attempts to close the window
         """
         if type(e_event) in self.handlers:
-            self.handlers[type(e_event)](e_event)
+            return self.handlers[type(e_event)](e_event)
 
     def create_sprite(self, sprite):
         """Add a new sprite to the mode.
@@ -90,6 +95,7 @@ class Mode(object):
         assign a new event handler in `handlers`.
         """
         self.game.quit()
+        return []
 
     def draw(self):
         """Redraw the scene.
@@ -102,6 +108,14 @@ class Mode(object):
         """
         self.batch.draw()
 
+    def add_controller(self, controller):
+        """Add a controller to the scene.
+
+        A controller will generally create one or more sprites as a
+        response.
+        """
+        self.controllers.append(controller)
+
 
 class GameMode(Mode):
     """A mode containing a 3d game environment."""
@@ -110,9 +124,9 @@ class GameMode(Mode):
         self.ground_sprites = []
         for g in ground:
             self.ground_sprites.append(g)
-            self.create_sprite(g)
+            self.add_controller(g)
         for s in other:
-            self.create_sprite(s)
+            self.add_controller(s)
 
     def setup(self, game, last_mode):
         super().setup(game, last_mode)
@@ -121,6 +135,6 @@ class GameMode(Mode):
         self.game.set_perspective()
         pyglet.gl.glMatrixMode(pyglet.gl.GL_MODELVIEW)
         pyglet.gl.glLoadIdentity()
-        pyglet.gl.gluLookAt(0, 5, 9, 0, 1, 0, 0, 1, 0)
+        pyglet.gl.gluLookAt(0, 3, 5, 0, 1, 0, 0, 1, 0)
         self.batch.draw()
 

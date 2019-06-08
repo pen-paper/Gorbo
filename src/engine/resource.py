@@ -2,6 +2,9 @@ import json
 import pyglet
 
 from . import model
+from . import controller
+from . import event
+from . import sprite
 
 
 class SaveFile(pyglet.resource.Loader):
@@ -11,6 +14,11 @@ class SaveFile(pyglet.resource.Loader):
     better documentation. This adds needed file formats for this game
     engine.
     """
+
+    def __init__(self):
+        super().__init__()
+        self._loaded_controllers = {}
+
     def json(self, name):
         """Load a JSON document.
 
@@ -34,3 +42,24 @@ class SaveFile(pyglet.resource.Loader):
         self._require_index()
         file = self.file(name)
         return model.Model(file)
+
+    def controller(self, name):
+        if name in self._loaded_controllers:
+            return self._loaded_controllers[name]
+        self._require_index()
+        file = self.file(name)
+        local_values = {}
+        exec(file.read(), self.module_globals(), local_values)
+        new_controller = type(name, (controller.Controller,), local_values)
+        new_controller.ControllerClass = new_controller
+        self._loaded_controllers[name] = new_controller
+        return new_controller
+
+    def module_globals(self):
+        class KeyCollection(object): pass
+        all_keys = KeyCollection()
+        all_keys.__dict__.update(pyglet.window.key.__dict__)
+        return {"ActivateEvent": event.ActivateEvent,
+                "CreateSpriteEvent": event.CreateSpriteEvent,
+                "key": all_keys,
+                "ModelSprite": sprite.ModelSprite}

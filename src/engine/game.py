@@ -3,6 +3,7 @@ from . import event
 from . import resource
 from . import sprite
 from . import mode
+from . import controller
 
 
 PERSPECTIVE = 0
@@ -48,6 +49,7 @@ class _Game(pyglet.window.Window):
         last_mode = self.mode
         self.mode = mode
         self.mode.setup(self, last_mode)
+        self.mode.send_event(event.ActivateEvent())
 
     def restore_mode(self, mode):
         """ Switch back to a previous mode.
@@ -169,11 +171,15 @@ class _Game(pyglet.window.Window):
     def load(self):
         """Load data from a save file."""
         party_data = self.save.json("party.json")
+        x = party_data["x"]
+        y = party_data["y"]
+        z = party_data["z"]
         for c in party_data["characters"]:
-            self.party.append(self.load_character(c))
-        self.start_mode(self.load_area(party_data["area"]))
+            self.party.append(self.load_character(c, x, y, z))
+        mode = self.load_area(party_data["area"])
         for c in self.party:
-            self.mode.create_sprite(c)
+            mode.add_controller(c)
+        self.start_mode(mode)
 
     def load_area(self, area_name):
         """Load an area from the save file."""
@@ -187,17 +193,18 @@ class _Game(pyglet.window.Window):
         return mode.GameMode(ground_models, other_models)
 
     def load_sprite(self, data):
-        model = self.save.obj("models/{}".format(data["model"]))
-        texture = self.save.image("textures/{}".format(data["texture"]))
-        if "controller" in data:
-            print(data["controller"])
-        return sprite.ModelSprite(model, data["x"], data["y"], None, texture)
+        if "controller" in data and data["controller"] is not None:
+            cont = self.save.controller("controllers/{}".format(data["controller"]))(data)
+        else:
+            model = self.save.obj("models/{}".format(data["model"]))
+            texture = self.save.image("textures/{}".format(data["texture"]))
+            cont = controller.NullController(sprite.ModelSprite(model, data["x"], data["y"], data["z"], controller.NullController, texture))
+        return cont
 
-    def load_character(self, name):
+    def load_character(self, name, x, y, z):
         data = self.save.json("characters/{}.json".format(name))
-        model = self.save.obj("models/character.obj")
-        texture = self.save.image("textures/{}".format(data["texture"]))
-        return sprite.ModelSprite(model, 0, 0, None, texture)
+        controller = self.save.controller("controllers/{}".format(data["controller"]))
+        return controller(self.save, data)
 
 
 _game = None

@@ -3,17 +3,41 @@ class Event(object):
         self.__dict__.update(**kwargs)
 
 
-class KeyDownEvent(Event): pass
-class KeyUpEvent(Event): pass 
-class CollisionEvent(Event): pass
-class MouseDownEvent(Event): pass
-class MouseUpEvent(Event): pass
-class UpdateEvent(Event): pass
-class CreateSpriteEvent(Event): pass
-class DeleteSpriteEvent(Event): pass
-class QuitEvent(Event): pass
-class PauseEvent(Event): pass
-class UnPauseEvent(Event): pass
+class ActivateEvent(Event):
+    handler_name = "on_activate"
+
+class KeyDownEvent(Event):
+    handler_name = "on_key_down"
+
+class KeyUpEvent(Event):
+    handler_name = "on_key_up"
+
+class CollisionEvent(Event):
+    handler_name = "on_collision"
+
+class MouseDownEvent(Event):
+    handler_name = "on_mouse_down"
+
+class MouseUpEvent(Event):
+    handler_name = "on_mouse_up"
+
+class UpdateEvent(Event):
+    handler_name = "on_update"
+
+class CreateSpriteEvent(Event):
+    handler_name = "on_create"
+
+class DeleteSpriteEvent(Event):
+    handler_name = "on_delete"
+
+class QuitEvent(Event):
+    handler_name = "on_quit"
+
+class PauseEvent(Event):
+    handler_name = "on_pause"
+
+class UnPauseEvent(Event):
+    handler_name = "on_resume"
 
 
 class Response(object):
@@ -22,5 +46,6 @@ class Response(object):
 
 
 class ChangeMode(Response): pass
+class CreateSprite(Response): pass
 class DeleteSprite(Response): pass
 class NoResponse(Response): pass
